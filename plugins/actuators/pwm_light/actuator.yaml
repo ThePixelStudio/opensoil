@@ -1,0 +1,10 @@
+id: pwm_light
+name: PWM Grow Light
+version: 1.0.0
+author: opensoil-core
+commands:
+  - key: pwm_light
+    type: integer
+    range: [0, 100]
+    mqtt: actuator/pwm_light/set
+safety: {}

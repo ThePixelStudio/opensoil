@@ -1,0 +1,9 @@
+id: relay_fan
+name: Cooling Fan Relay
+version: 1.0.0
+author: opensoil-core
+commands:
+  - key: relay_fan
+    type: on_off
+    mqtt: actuator/relay_fan/set
+safety: {}

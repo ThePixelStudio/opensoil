@@ -1,0 +1,32 @@
+id: sht31
+name: SHT31 Temperature & Humidity
+version: 1.0.0
+author: opensoil-core
+description: >
+  Sensirion SHT31 high-accuracy I2C temperature and humidity sensor.
+  Accuracy: ±0.3°C temperature, ±2% RH humidity.
+  Preferred over DHT22 for production use.
+
+topics:
+  - key: sht31_temp
+    name: Air temperature
+    unit: celsius
+    mqtt: sensors/sht31_temp
+    range: [-40, 125]
+  - key: sht31_humidity
+    name: Air humidity
+    unit: percent
+    mqtt: sensors/sht31_humidity
+    range: [0, 100]
+
+poll_interval_sec: 30
+
+hardware:
+  protocol: i2c
+  address: "0x44"
+  alternative_address: "0x45"
+  esphome_platform: sht3xd
+
+compatible_devices:
+  - esp32_mqtt
+  - rpi_gpio

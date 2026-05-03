@@ -1,0 +1,51 @@
+services:
+
+  mqtt:
+    image: eclipse-mosquitto:2
+    restart: unless-stopped
+    ports:
+      - "1883:1883"
+    volumes:
+      - ./docker/mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
+      - mqtt_data:/mosquitto/data
+    healthcheck:
+      test: ["CMD-SHELL", "mosquitto_pub -h localhost -t health -m ping 2>/dev/null || exit 1"]
+      interval: 3s
+      timeout: 3s
+      retries: 10
+      start_period: 5s
+
+  opensoil:
+    build: .
+    restart: unless-stopped
+    depends_on:
+      mqtt:
+        condition: service_healthy
+    environment:
+      # Note: ${ENV_VAR} substitution in config.yaml is not yet implemented.
+      # Either paste your API key directly into config.yaml under llm.api_key,
+      # or set it here and update config.yaml to read ANTHROPIC_API_KEY once
+      # the YAML loader supports os.path.expandvars.
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+    volumes:
+      # Mount your config — update broker_host to "mqtt" (the service name above).
+      - ./config.yaml:/app/config.yaml:ro
+      # Persist sensor history and logs on the host.
+      - opensoil_data:/root/.opensoil
+
+  opensoil-ui:
+    build: .
+    restart: unless-stopped
+    command: ["ui"]
+    ports:
+      - "7070:7070"
+    volumes:
+      - ./config.yaml:/app/config.yaml:ro
+      - opensoil_data:/root/.opensoil
+    depends_on:
+      mqtt:
+        condition: service_healthy
+
+volumes:
+  mqtt_data:
+  opensoil_data:

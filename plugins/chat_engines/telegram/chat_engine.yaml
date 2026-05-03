@@ -1,0 +1,11 @@
+id: telegram
+name: Telegram Bot
+version: 1.0.0
+author: opensoil-core
+description: >
+  Telegram bot integration. Supports the same three-mode chat as the web UI:
+  observations, questions, and actuator commands. Also receives proactive
+  alerts for anomalies, safety overrides, and LLM failures.
+
+requires:
+  - python-telegram-bot>=20.0

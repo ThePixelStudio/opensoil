@@ -1,0 +1,28 @@
+id: resistive_soil
+name: Resistive Soil Moisture (LM393)
+version: 1.0.0
+author: opensoil-core
+
+topics:
+  - key: soil_resistive
+    name: Soil Moisture
+    unit: percent
+    mqtt: sensors/soil_resistive
+    range: [0, 100]
+
+poll_interval_sec: 30
+
+hardware:
+  protocol: adc
+  adc_pin: A0           # only ADC pin on ESP8266 NodeMCU
+  notes: >
+    LM393-based resistive probe — use the AO (analog out) pin, not DO.
+    Signal is inverted vs. capacitive: dry probe = high voltage (~3.3V / ADC 1023),
+    wet probe = low voltage (~0.3V / ADC ~300).
+    Calibrate SOIL_DRY and SOIL_WET constants in firmware after measuring your
+    specific probe in dry soil and in water.
+    WARNING: resistive probes corrode after several months in moist soil.
+    For permanent outdoor deployments prefer the capacitive_soil plugin.
+
+compatible_devices:
+  - esp32_mqtt

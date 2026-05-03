@@ -1,0 +1,97 @@
+# OpenSoil configuration example.
+# Copy to config.yaml and fill in your values:
+#   cp config.example.yaml config.yaml
+
+box_id: my_box
+
+# ── Domain & profile ──────────────────────────────────────────────────────
+domain: smart_garden
+profile: swiss_chard        # loads plugins/domains/smart_garden/profiles/swiss_chard.yaml
+
+# ── Hardware adapter ──────────────────────────────────────────────────────
+# Change adapter to swap hardware (esp32_mqtt, rpi_gpio, arduino_serial, http_rest)
+device:
+  adapter: esp32_mqtt
+  config:
+    broker_host: 192.168.1.XXX   # your MQTT broker IP (or "mqtt" inside Docker)
+    broker_port: 1883
+    topic_prefix: opensoil
+
+# ── Multi-node sensor network (alternative to `device:`) ─────────────────
+# Use when one board cannot cover the whole box.
+# Each node subscribes to: opensoil/nodes/<node_id>/sensors/#
+# Uncomment and delete the `device:` section above to enable.
+#
+#nodes:
+#  - id: node_left
+#    adapter: esp32_mqtt
+#    config:
+#      broker_host: 192.168.1.XXX
+#      broker_port: 1883
+#      topic_prefix: opensoil
+#    actuators: [relay_pump, relay_fan]
+#
+#  - id: node_right
+#    adapter: esp32_mqtt
+#    config:
+#      broker_host: 192.168.1.XXX
+#      broker_port: 1883
+#      topic_prefix: opensoil
+#    actuators: []
+
+# ── Active sensors (must match what the firmware publishes) ───────────────
+sensors:
+  - plugin: dht11
+  - plugin: resistive_soil
+
+# ── Active actuators ──────────────────────────────────────────────────────
+actuators:
+  - plugin: relay_pump
+  - plugin: relay_fan
+
+# ── LLM provider ─────────────────────────────────────────────────────────
+# Swap provider: claude | gemini | openai | ollama
+llm:
+  provider: gemini
+  model: gemini-2.0-flash
+  api_key: YOUR_GEMINI_API_KEY       # https://aistudio.google.com/app/apikey
+  call_interval_sec: 120
+
+# For Claude (Anthropic):
+#llm:
+#  provider: claude
+#  model: claude-sonnet-4-6
+#  api_key: YOUR_ANTHROPIC_API_KEY   # https://console.anthropic.com/
+
+# For local Ollama (zero cost):
+#llm:
+#  provider: ollama
+#  model: llama3.2:3b
+#  call_interval_sec: 60
+
+# ── History storage ───────────────────────────────────────────────────────
+history:
+  backend: sqlite                    # zero config, works on Pi Zero
+  # backend: influxdb
+  # config:
+  #   host: localhost
+  #   port: 8086
+  #   token: YOUR_INFLUX_TOKEN
+  #   bucket: opensoil
+
+# ── External chat (optional) ─────────────────────────────────────────────
+# Enable to control the box and receive alerts via Telegram.
+# Setup: pip install "opensoil[telegram]"
+#        Create a bot via @BotFather → copy token below
+#        Get your chat ID from @userinfobot
+#
+#chat:
+#  engine: telegram
+#  config:
+#    token: "YOUR_TELEGRAM_BOT_TOKEN"
+#    allowed_chat_ids: [YOUR_TELEGRAM_USER_ID]
+
+# ── Logging ───────────────────────────────────────────────────────────────
+logging:
+  level: INFO     # DEBUG | INFO | WARNING | ERROR
+  file: ~/.opensoil/logs/my_box.log

@@ -1,0 +1,47 @@
+id: esp32_mqtt
+name: ESP32 over MQTT
+version: 1.0.0
+author: opensoil-core
+description: >
+  WiFi-connected ESP32 boards using MQTT for sensor publishing
+  and actuator control. Compatible with ESPHome and Arduino firmware.
+
+transport: mqtt
+
+config_schema:
+  broker_host:
+    type: string
+    default: localhost
+    description: MQTT broker hostname or IP
+  broker_port:
+    type: integer
+    default: 1883
+  topic_prefix:
+    type: string
+    default: opensoil
+    description: Base topic prefix (e.g. "garden" -> garden/sensors/#)
+  username:
+    type: string
+    required: false
+  password:
+    type: string
+    required: false
+
+supports:
+  protocols: [i2c, gpio, adc, pwm, uart]
+  sensors:
+    - sht31
+    - dht22
+    - bh1750
+    - capacitive_soil
+    - motion_pir
+    - co2_mhz19
+  actuators:
+    - relay_pump
+    - relay_fan
+    - pwm_light
+    - smart_plug
+
+firmware:
+  esphome_template: firmware/esphome_base.yaml
+  arduino_example: firmware/arduino_example/

@@ -1,0 +1,31 @@
+id: dht11
+name: DHT11 Temperature & Humidity
+version: 1.0.0
+author: opensoil-core
+
+topics:
+  - key: dht11_temp
+    name: Air Temperature
+    unit: celsius
+    mqtt: sensors/dht11_temp
+    range: [0, 50]
+
+  - key: dht11_humidity
+    name: Air Humidity
+    unit: percent
+    mqtt: sensors/dht11_humidity
+    range: [20, 90]
+
+poll_interval_sec: 30
+
+hardware:
+  protocol: gpio
+  gpio_pin: D2         # GPIO4 on NodeMCU
+  esphome_platform: dht
+  notes: >
+    DHT11 uses a proprietary single-wire protocol — NOT Dallas 1-Wire.
+    Minimum 1 s between readings enforced by the sensor itself.
+    For higher accuracy use DHT22 (same pinout, same wiring).
+
+compatible_devices:
+  - esp32_mqtt

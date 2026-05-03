@@ -1,0 +1,74 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.backends.legacy:build"
+
+[project]
+name = "opensoil"
+version = "0.1.0"
+description = "LLM-driven IoT platform — smart garden, smart home, and beyond"
+readme = "README.md"
+license = { file = "LICENSE" }
+requires-python = ">=3.11"
+authors = [
+  { name = "OpenSoil Contributors" }
+]
+keywords = ["iot", "llm", "smart-home", "garden", "mqtt", "esp32", "automation"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: Home Automation",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+
+dependencies = [
+  "pyyaml>=6.0",
+  "paho-mqtt>=1.6",
+  "anthropic>=0.25",
+  "numpy>=1.26",
+  "click>=8.1",
+  "requests>=2.31",
+  "fastapi>=0.109",
+  "uvicorn>=0.27",
+  "aiofiles>=23.0",
+]
+
+[project.optional-dependencies]
+openai = ["openai>=1.0"]
+influxdb = ["influxdb-client>=1.40"]
+telegram = ["python-telegram-bot>=20.0"]
+dev = [
+  "pytest>=7.0",
+  "pytest-asyncio",
+  "pytest-mock",
+  "ruff",
+  "mypy",
+]
+
+[project.scripts]
+opensoil = "cli.main:main"
+
+[project.urls]
+Homepage   = "https://github.com/opensoil/opensoil"
+Repository = "https://github.com/opensoil/opensoil"
+Issues     = "https://github.com/opensoil/opensoil/issues"
+Docs       = "https://docs.opensoil.dev"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["core*", "plugins*", "cli*"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.mypy]
+python_version = "3.11"
+warn_return_any = true
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"

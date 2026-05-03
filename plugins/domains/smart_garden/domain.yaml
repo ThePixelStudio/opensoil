@@ -1,0 +1,81 @@
+id: smart_garden
+name: Smart Garden
+version: 1.0.0
+author: opensoil-core
+description: >
+  LLM-driven plant growth optimization.
+  Reads soil and air sensors every 60s.
+  Controls water pump, grow light, and fan.
+  Aware of plant growth phases — adjusts targets automatically.
+
+sensors:
+  - id: dht11_temp
+    name: Air temperature
+    unit: celsius
+    required: true
+  - id: dht11_humidity
+    name: Air humidity
+    unit: percent
+    required: true
+  - id: soil_resistive
+    name: Soil moisture
+    unit: percent
+    required: true
+
+actuators:
+  - id: relay_pump
+    name: Water pump
+  - id: relay_fan
+    name: Cooling fan
+
+context:
+  - key: day_number
+    source: session
+  - key: growth_phase
+    source: session
+  - key: phase_targets
+    source: session
+  - key: last_watered
+    source: session.last_actuation
+
+poll:
+  interval_sec: 60
+  triggers:
+    - sensor: dht11_temp
+      condition: "> 33"
+      reason: heat_emergency
+    - sensor: soil_resistive
+      condition: "< 40"
+      reason: drought_alert
+
+safety:
+  - "relay_pump OFF if soil_resistive > 78"
+  - "relay_fan ON (forced) if dht11_temp > 32"
+  - "pwm_light OFF between 18:00 and 06:00"
+
+session:
+  concept: grow_cycle
+  start_event: PLANT_ADDED
+  end_event: HARVEST
+  end_event_alt: PLANT_DIED
+
+# ── Per-actuator duration limits and no-effect detection ─────────────────────
+actuator_limits:
+  relay_pump:
+    max_continuous_sec: 120        # force off after 2 min continuous run
+    max_on_per_hour_sec: 300       # max 5 min on per rolling hour
+    no_effect_check:
+      sensor: soil_resistive
+      direction: increase
+      min_change: 3.0              # expect soil moisture to rise ≥ 3 %
+      check_after_sec: 600          # check 90 s after pump turns on
+      auto_disable: false           # auto-off if no effect detected
+  relay_fan:
+    max_continuous_sec: 1800       # force off after 30 min continuous run
+    max_on_per_hour_sec: 3600      # fans can run freely within any hour
+    no_effect_check:
+      sensor: dht11_temp
+      direction: decrease
+      min_change: 1.5              # expect temperature to drop ≥ 1.5 °C
+      check_after_sec: 600
+      auto_disable: false          # warn only — don't auto-disable fan

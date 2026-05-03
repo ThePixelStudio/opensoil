@@ -1,0 +1,38 @@
+id: relay_pump
+name: Water Pump (Relay)
+version: 1.0.0
+author: opensoil-core
+description: >
+  5V or 12V submersible water pump controlled via relay module.
+  Supports on/off and duration-based triggering.
+
+commands:
+  - key: relay_pump
+    name: Pump on/off
+    type: on_off
+    mqtt: actuator/relay_pump/set
+    values: ["on", "off"]
+  - key: water_duration_sec
+    name: Auto-off duration
+    type: integer
+    range: [0, 120]
+    unit: seconds
+    description: If > 0, pump auto-turns off after this many seconds
+
+safety:
+  # Interlock declared here — enforced by SafetyEngine at runtime
+  interlock:
+    sensor: soil_cap
+    condition: "< 78"
+    message: "Pump blocked — soil moisture already above 78%"
+  max_duration_sec: 120
+  cooldown_sec: 300   # minimum seconds between pump activations
+
+hardware:
+  gpio_type: relay
+  voltage: [5, 12]
+  typical_gpio: GPIO26
+
+compatible_devices:
+  - esp32_mqtt
+  - rpi_gpio

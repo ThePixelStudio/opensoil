@@ -1,0 +1,96 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+wheels/
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# pip
+pip-log.txt
+pip-delete-this-directory.txt
+
+# pytest / coverage
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+coverage.xml
+*.coveragerc
+
+# mypy
+.mypy_cache/
+.dmypy.json
+
+# ruff
+.ruff_cache/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+
+# OpenSoil runtime data
+~/.opensoil/          # expanded by shell — kept here as a reminder
+*.db
+*.db-shm
+*.db-wal
+
+# Secrets — never commit these
+config.yaml           # contains API keys and broker credentials
+*.env
+.env
+.env.*
+secrets.yaml
+credentials.yaml
+CLAUDE.md
+
+# Logs
+*.log
+logs/
+
+# Arduino build artefacts
+*.elf
+*.bin
+*.hex
+*.map
+build/
+
+# ESPHome build artefacts
+.esphome/
+
+# Docker volumes / local override
+docker-compose.override.yml
+.docker/
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb
+
+# Temporary files
+*.tmp
+*.bak
+*.orig
+config.yaml
+docs/context.md

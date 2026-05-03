@@ -1,0 +1,11 @@
+id: capacitive_soil
+name: Capacitive Soil Moisture
+version: 1.0.0
+author: opensoil-core
+topics:
+  - key: soil_cap
+    unit: percent
+    mqtt: sensors/soil_cap
+poll_interval_sec: 30
+hardware:
+  protocol: adc

@@ -1,0 +1,12 @@
+id: bh1750
+name: BH1750 Light Sensor
+version: 1.0.0
+author: opensoil-core
+topics:
+  - key: bh1750_lux
+    unit: lux
+    mqtt: sensors/bh1750_lux
+poll_interval_sec: 30
+hardware:
+  protocol: i2c
+  address: "0x23"

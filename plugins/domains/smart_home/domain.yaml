@@ -1,0 +1,66 @@
+id: smart_home
+name: Smart Home
+version: 1.0.0
+author: opensoil-core
+description: >
+  LLM-driven comfort and energy optimization for home environments.
+  Balances temperature, occupancy, and energy cost.
+
+sensors:
+  - id: temp_indoor
+    name: Indoor temperature
+    unit: celsius
+    required: true
+  - id: humidity_indoor
+    name: Indoor humidity
+    unit: percent
+    required: false
+  - id: motion_living
+    name: Living room motion
+    unit: bool
+    required: false
+  - id: power_meter
+    name: Power consumption
+    unit: watts
+    required: false
+
+actuators:
+  - id: ac_unit
+    name: Air conditioning
+  - id: ceiling_fan
+    name: Ceiling fan
+  - id: smart_lights
+    name: Smart lights (PWM)
+  - id: door_lock
+    name: Door lock
+
+context:
+  - key: time_of_day
+    source: system_clock
+    format: HH:MM
+  - key: day_of_week
+    source: system_clock
+  - key: occupancy
+    source: derived
+    from: motion_living
+    transform: "true if value > 0 in last 10min"
+
+poll:
+  interval_sec: 60
+  triggers:
+    - sensor: motion_living
+      condition: changed
+      reason: occupancy_change
+    - sensor: temp_indoor
+      condition: "> 30"
+      reason: heat_alert
+
+safety:
+  - "door_lock OFF between 23:00 and 06:00"
+  - "ac_unit OFF if temp_indoor < 20"
+  - "smart_lights OFF if motion_living < 1 for 30min"
+
+session:
+  concept: occupancy_period
+  start_event: MOTION_DETECTED
+  end_event: NO_MOTION_60MIN

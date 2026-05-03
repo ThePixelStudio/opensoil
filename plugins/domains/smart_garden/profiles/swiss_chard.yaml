@@ -1,0 +1,42 @@
+id: swiss_chard
+name: Swiss Chard
+cultivar: Fordhook Giant
+harvest_days: 55
+expected_duration_days: 90  # cut-and-come-again up to 3 months
+notes: >
+  Heat-tolerant leafy green. Not day-length sensitive — low bolt risk.
+  Main heat risk: leaf quality loss above 33°C, not sudden bolting.
+  Cut outer leaves every 7-10 days from day 55 for continuous harvest.
+
+phases:
+  germination:
+    days: [0, 10]
+    targets:
+      dht11_temp:     [22, 28]
+      dht11_humidity: [65, 85]
+      soil_resistive: [70, 78]
+    notes: High moisture, minimal light, warmth priority
+
+  seedling:
+    days: [10, 25]
+    targets:
+      dht11_temp:     [22, 27]
+      dht11_humidity: [60, 78]
+      soil_resistive: [60, 72]
+    notes: Increase light gradually, watch for damping off
+
+  vegetative:
+    days: [25, 55]
+    targets:
+      dht11_temp:     [20, 28]
+      dht11_humidity: [50, 75]
+      soil_resistive: [55, 70]
+    notes: Full targets. 12h light. Slightly cooler = better leaf tenderness.
+
+  harvest:
+    days: [55, 999]
+    targets:
+      dht11_temp:     [20, 27]
+      dht11_humidity: [50, 72]
+      soil_resistive: [52, 68]
+    notes: Reduce water slightly. Harvest outer leaves every 7-10 days.

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OpenSoil</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header class="app-header">
+    <div class="header-brand">
+      <span class="logo">🌱</span>
+      <span class="app-name">OpenSoil</span>
+      <span class="header-sep">·</span>
+      <span id="box-id" class="box-id">—</span>
+    </div>
+    <div class="header-meta">
+      <span id="day-badge" class="pill pill-day">Day —</span>
+      <span id="phase-badge" class="pill pill-phase">—</span>
+      <span id="conn-dot" class="conn-dot" title="Connecting…">●</span>
+    </div>
+  </header>
+
+  <nav class="tab-nav">
+    <button class="tab-btn active" data-tab="dashboard">Dashboard</button>
+    <button class="tab-btn" data-tab="profile">Profile</button>
+    <button class="tab-btn" data-tab="chat">Chat</button>
+    <button class="tab-btn" data-tab="decisions">Decisions</button>
+    <button class="tab-btn" data-tab="events">Events</button>
+  </nav>
+
+  <main class="content">
+
+    <!-- ── Dashboard ───────────────────────────────────────────────────── -->
+    <div id="tab-dashboard" class="tab-pane active">
+
+      <div id="profile-panel" class="card profile-panel">
+        <div class="skeleton-block"></div>
+      </div>
+
+      <div id="sensor-cards" class="sensor-grid"></div>
+
+      <div id="actuator-panel" class="card actuator-panel">
+        <div class="card-header"><h3>Actuators</h3></div>
+        <div id="actuator-list" class="actuator-list"></div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <h3>Sensor History</h3>
+          <div class="range-btns">
+            <button class="range-btn" data-hours="1">1h</button>
+            <button class="range-btn" data-hours="6">6h</button>
+            <button class="range-btn active" data-hours="24">24h</button>
+            <button class="range-btn" data-hours="168">7d</button>
+          </div>
+        </div>
+        <div class="chart-wrap">
+          <canvas id="sensor-chart"></canvas>
+        </div>
+      </div>
+
+      <div id="last-decision-card" class="card"></div>
+    </div>
+
+    <!-- ── Profile ─────────────────────────────────────────────────────── -->
+    <div id="tab-profile" class="tab-pane">
+      <div id="profile-detail" class="card"></div>
+    </div>
+
+    <!-- ── Chat ────────────────────────────────────────────────────────── -->
+    <div id="tab-chat" class="tab-pane">
+      <div class="chat-wrap">
+        <div id="chat-messages" class="chat-messages">
+          <div class="chat-empty dim">Loading conversation…</div>
+        </div>
+        <div class="chat-footer">
+          <input id="chat-input" class="chat-input" type="text"
+            placeholder="Note an observation, or ask a question ending with ?">
+          <button id="chat-send" class="btn-send">Send</button>
+        </div>
+        <div class="chat-hint dim">
+          Statement → saved as observation &nbsp;·&nbsp; Question (ends with ?) → AI answers
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Decisions ────────────────────────────────────────────────────── -->
+    <div id="tab-decisions" class="tab-pane">
+      <div id="decisions-wrap" class="card"></div>
+    </div>
+
+    <!-- ── Events ──────────────────────────────────────────────────────── -->
+    <div id="tab-events" class="tab-pane">
+      <div id="events-wrap" class="card"></div>
+    </div>
+
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
